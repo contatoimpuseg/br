@@ -190,51 +190,63 @@ footer{background:#0c1116;color:#8e989f;padding:35px 0}.foot{display:flex;justif
 <footer><div class="wrap foot"><div class="brand"><span class="brandmark"><i></i><i></i><i></i><i></i></span>IMPU<em>SEG</em></div><div>Crescimento e tecnologia para Segurança Privada.</div><div><a href="seo-para-empresas-de-seguranca.html">SEO</a> • <a href="empresas-de-vigilancia.html">Vigilância</a> • <a href="empresas-de-monitoramento.html">Monitoramento</a> • <a href="empresas-de-portaria.html">Portaria</a> • <a href="empresas-de-seguranca-eletronica.html">Segurança Eletrônica</a></div></div></footer>
 
 <script>
-(function(){
-  const slider=document.getElementById('segmentSlider');
-  const prev=document.getElementById('segPrev');
-  const next=document.getElementById('segNext');
-  if(!slider||!prev||!next)return;
+document.addEventListener("DOMContentLoaded", function () {
 
-  function step(){
-    const card=slider.querySelector('.segment-card');
-    return card ? card.getBoundingClientRect().width : 300;
+  const slider = document.getElementById("segmentSlider");
+  const prev = document.getElementById("segPrev");
+  const next = document.getElementById("segNext");
+
+  if (!slider) return;
+
+  function tamanhoCard() {
+    const card = slider.querySelector(".segment-card");
+    return card ? card.offsetWidth : 300;
   }
 
-  function goNext(){
-    const max=slider.scrollWidth-slider.clientWidth;
-    if(slider.scrollLeft >= max-10){
-      slider.scrollTo({left:0,behavior:'smooth'});
-    }else{
-      slider.scrollBy({left:step(),behavior:'smooth'});
+  function proximo() {
+    const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+    if (slider.scrollLeft >= maxScroll - 10) {
+      slider.scrollTo({
+        left: 0,
+        behavior: "smooth"
+      });
+    } else {
+      slider.scrollBy({
+        left: tamanhoCard(),
+        behavior: "smooth"
+      });
     }
   }
 
-  function goPrev(){
-    if(slider.scrollLeft <= 10){
-      slider.scrollTo({left:slider.scrollWidth-slider.clientWidth,behavior:'smooth'});
-    }else{
-      slider.scrollBy({left:-step(),behavior:'smooth'});
+  function anterior() {
+    if (slider.scrollLeft <= 10) {
+      slider.scrollTo({
+        left: slider.scrollWidth,
+        behavior: "smooth"
+      });
+    } else {
+      slider.scrollBy({
+        left: -tamanhoCard(),
+        behavior: "smooth"
+      });
     }
   }
 
-  prev.addEventListener('click',goPrev);
-  next.addEventListener('click',goNext);
-
-  let auto=setInterval(goNext,3200);
-  function pause(){clearInterval(auto)}
-  function resume(){
-    clearInterval(auto);
-    auto=setInterval(goNext,3200);
+  if (next) {
+    next.addEventListener("click", proximo);
   }
 
-  slider.addEventListener('mouseenter',pause);
-  slider.addEventListener('mouseleave',resume);
-  slider.addEventListener('touchstart',pause,{passive:true});
-  slider.addEventListener('touchend',resume,{passive:true});
-  prev.addEventListener('click',resume);
-  next.addEventListener('click',resume);
-})();
+  if (prev) {
+    prev.addEventListener("click", anterior);
+  }
+
+  /* AUTOPLAY */
+  setInterval(function () {
+    proximo();
+  }, 2500);
+
+});
 </script>
 
 </body></html>
